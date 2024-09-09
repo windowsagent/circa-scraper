@@ -1,0 +1,3 @@
+setuptools
+pure-python-adb==0.3.0.dev0
+python-memcached==1.62
