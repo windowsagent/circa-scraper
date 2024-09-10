@@ -18,7 +18,7 @@ def startEmulator():
     avd_name = avds[0]
 
     # Start the selected AVD
-    start_command = ["emulator", '-avd', avd_name, '-no-window', 'no-audio', '-skip-adb-auth', '-no-boot-anim', '-show-kernel']
+    start_command = ["emulator", '-avd', avd_name, '-no-window', '-no-audio', '-skip-adb-auth', '-no-boot-anim', '-show-kernel', '-port 5037']
     return subprocess.Popen(start_command)
 
 async def wait_for_port(host, port, timeout=10):
