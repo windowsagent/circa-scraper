@@ -18,7 +18,7 @@ def startEmulator():
 
     # Start the selected AVD
     start_command = ["emulator", '-avd', avd_name, '-no-window', 'no-audio', '-skip-adb-auth', '-no-boot-anim', '-show-kernel']
-    subprocess.run(start_command)
+    return subprocess.Popen(start_command)
 
 
 def prepare_device(device: Device, emulator_id: str):
@@ -29,7 +29,7 @@ def prepare_device(device: Device, emulator_id: str):
         os.system("adb -s " + emulator_id + " root")
 
         # Ensure app is installed
-        # device.install("./com.circasports.co.apk")
+        device.install("./com.circasports.co.apk")
         device.shell("pm grant com.circasports.co  android.permission.ACCESS_FINE_LOCATION")
 
         # Open app
@@ -64,13 +64,11 @@ def attempt_cookies_collection(device: Device):
 
 
 def refresh_cookies(emulator_id):
-    # startEmulator()
+    emulator = startEmulator()
     client = AdbClient(host="127.0.0.1", port=5037)
     device = client.device(emulator_id)
-    if not device:
-        raise RuntimeError("Unable to connect to android device")
-
     prepare_device(device, emulator_id)
+    emulator.terminate()
     return attempt_cookies_collection(device)
 
 
