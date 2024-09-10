@@ -18,7 +18,7 @@ def startEmulator():
     avd_name = avds[0]
 
     # Start the selected AVD
-    start_command = ["emulator", '-avd', avd_name, '-no-window', '-no-audio', '-skip-adb-auth', '-no-boot-anim', '-show-kernel', '-port 5037',
+    start_command = ["emulator", '-avd', avd_name, '-port 5037', '-no-window', '-no-audio', '-skip-adb-auth', '-no-boot-anim', '-show-kernel',
                      '-qemu', '-cpu', 'max', '-machine', 'gic-version=max']
     return subprocess.Popen(start_command)
 
