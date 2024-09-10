@@ -17,11 +17,12 @@ def startEmulator():
     avd_name = avds[1]
 
     # Start the selected AVD
-    start_command = ["emulator", '-avd', avd_name]
+    start_command = ["emulator", '-avd', avd_name, '-no-window', 'no-audio', '-skip-adb-auth', '-no-boot-anim', '-show-kernel']
     subprocess.run(start_command)
 
 
 def prepare_device(device: Device, emulator_id: str):
+    device.shell("su root pm disable com.google.android.googlequicksearchbox")
     device.shell("am force-stop com.circasports.co")
     if device:
         # Ensure adb is running as root
