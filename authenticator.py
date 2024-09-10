@@ -14,7 +14,7 @@ def startEmulator():
         raise Exception("No AVDs found")
 
     # Select the first AVD
-    avd_name = avds[1]
+    avd_name = avds[0]
 
     # Start the selected AVD
     start_command = ["emulator", '-avd', avd_name, '-no-window', 'no-audio', '-skip-adb-auth', '-no-boot-anim', '-show-kernel']
