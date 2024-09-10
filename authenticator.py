@@ -82,4 +82,4 @@ def refresh_cookies(emulator_id):
 
 
 if __name__ == "__main__":
-    refresh_cookies("emulator-5554")
+    print(refresh_cookies("emulator-5554"))
