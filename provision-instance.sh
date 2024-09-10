@@ -1,6 +1,7 @@
 #!/bin/sh
 git clone https://github.com/windowsagent/circa-scraper
 cd circa-scraper
+pip3 install -r requirements.txt --break-system-packages
 sudo apt update && sudo apt upgrade
 sudo apt install default-jdk python3-pip repo python-is-python3 unzip libpcre2-dev adb
 wget https://dl.google.com/android/repository/commandlinetools-linux-8512546_latest.zip 
