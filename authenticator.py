@@ -78,7 +78,7 @@ def attempt_cookies_collection(device: Device):
 
 def refresh_cookies(emulator_id):
     emulator = startEmulator()
-    wait_for_port("127.0.0.1", port=5037)
+    wait_for_port(host="127.0.0.1", port=5037)
     client = AdbClient(host="127.0.0.1", port=5037)
     device = client.device(emulator_id)
     prepare_device(device, emulator_id)
