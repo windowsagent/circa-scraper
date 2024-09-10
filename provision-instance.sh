@@ -30,3 +30,4 @@ mkdir /opt/android-sdk/platforms
 mkdir /opt/android-sdk/platform-tools
 echo "Vulkan = off" >> ~/.android/advancedFeatures.ini
 echo "GLDirectMem = on" >> ~/.android/advancedFeatures.ini
+sudo ln -sf /opt/android-sdk/emulator/emulator /usr/bin/
