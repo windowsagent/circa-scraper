@@ -5,6 +5,7 @@ import sqlite3
 from ppadb.client import Client as AdbClient
 from ppadb.command.host import Device
 import memcache
+import asyncio
 
 
 def startEmulator():
@@ -20,6 +21,12 @@ def startEmulator():
     start_command = ["emulator", '-avd', avd_name, '-no-window', 'no-audio', '-skip-adb-auth', '-no-boot-anim', '-show-kernel']
     return subprocess.Popen(start_command)
 
+async def wait_for_port(host, port, timeout=10):
+    try:
+        await asyncio.wait_for(asyncio.open_connection(host, port), timeout)
+        print(f"Port {port} on {host} is open.")
+    except asyncio.TimeoutError:
+        pass
 
 def prepare_device(device: Device, emulator_id: str):
     device.shell("su root pm disable com.google.android.googlequicksearchbox")
@@ -65,6 +72,7 @@ def attempt_cookies_collection(device: Device):
 
 def refresh_cookies(emulator_id):
     emulator = startEmulator()
+    asyncio.run(wait_for_port("127.0.0.1", port=5037))
     client = AdbClient(host="127.0.0.1", port=5037)
     device = client.device(emulator_id)
     prepare_device(device, emulator_id)
