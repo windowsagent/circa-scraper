@@ -81,10 +81,10 @@ def attempt_cookies_collection(device: Device):
 def refresh_cookies(emulator_id):
     emulator = startEmulator()
     try:
-        wait_for_port(host="127.0.0.1", port=5037)
-
+        time.sleep(5)
         # Make sure auth token does not exist, we want to bypass authentication
         pathlib.Path(os.path.expanduser("~/.emulator_console_auth_token")).unlink(missing_ok=True)
+        wait_for_port(host="127.0.0.1", port=5037)
         client = AdbClient(host="127.0.0.1", port=5037)
         device = client.device(emulator_id)
         if not device:
