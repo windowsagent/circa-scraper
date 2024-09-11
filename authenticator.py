@@ -21,8 +21,6 @@ def startEmulator():
     start_command = ["/opt/android-sdk/emulator/emulator", '-avd', avd_name, '-port', '5037', '-no-window', '-no-audio', '-skip-adb-auth', '-no-boot-anim', '-show-kernel',
                      '-qemu', '-cpu', 'max', '-machine', 'gic-version=max']
     
-    # Make sure auth token does not exist, we want to bypass authentication
-    pathlib.Path(os.path.expanduser("~/.emulator_console_auth_token")).unlink(missing_ok=True)
 
     return subprocess.Popen(start_command)
 
@@ -84,6 +82,9 @@ def refresh_cookies(emulator_id):
     emulator = startEmulator()
     try:
         wait_for_port(host="127.0.0.1", port=5037)
+
+        # Make sure auth token does not exist, we want to bypass authentication
+        pathlib.Path(os.path.expanduser("~/.emulator_console_auth_token")).unlink(missing_ok=True)
         client = AdbClient(host="127.0.0.1", port=5037)
         device = client.device(emulator_id)
         if not device:
