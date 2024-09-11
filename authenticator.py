@@ -25,7 +25,7 @@ def startEmulator():
     return subprocess.Popen(start_command)
 
 
-def prepare_device(device: Device, emulator_id: str):
+def prepare_device(device: Device):
     print("Disabling google quick search box for better performance")   
     device.shell("su root pm disable com.google.android.googlequicksearchbox")
     print("Installing circasports")   
@@ -74,7 +74,7 @@ def refresh_cookies(emulator_id):
         device = client.device(emulator_id)
         if not device:
             raise Exception
-        prepare_device(device, emulator_id)
+        prepare_device(device)
         return attempt_cookies_collection(device)
     finally:
         emulator.terminate()
