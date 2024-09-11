@@ -25,25 +25,13 @@ def startEmulator():
     return subprocess.Popen(start_command)
 
 
-def wait_for_port(port: int, host: str = 'localhost', timeout: float = 10.0):
-    start_time = time.perf_counter()
-    while True:
-        try:
-            with socket.create_connection((host, port), timeout=timeout):
-                break
-        except OSError as ex:
-            time.sleep(0.01)
-            if time.perf_counter() - start_time >= timeout:
-                raise TimeoutError()
-
 def prepare_device(device: Device, emulator_id: str):
     print("Disabling google quick search box for better performance")   
     device.shell("su root pm disable com.google.android.googlequicksearchbox")
     print("Installing circasports")   
     device.install("./com.circasports.co.apk")
     device.shell("pm grant com.circasports.co  android.permission.ACCESS_FINE_LOCATION")
-
-    # Open app
+# Open app
     print("Opening circasports")
     command = "monkey -v -p com.circasports.co -c android.intent.category.LAUNCHER 1"
     device.shell(command)
@@ -80,18 +68,16 @@ def refresh_cookies(emulator_id):
         pass
 
     emulator = startEmulator()
+    time.sleep(30)
     try:
-        wait_for_port(host="127.0.0.1", port=5037)
         client = AdbClient(host="127.0.0.1", port=5037)
         device = client.device(emulator_id)
         if not device:
             raise Exception
         prepare_device(device, emulator_id)
+        return attempt_cookies_collection(device)
     finally:
         emulator.terminate()
-
-    return attempt_cookies_collection(device)
-
 
 if __name__ == "__main__":
     print(refresh_cookies("emulator-5554"))
