@@ -6,7 +6,7 @@ from ppadb.client import Client as AdbClient
 from ppadb.command.host import Device
 import memcache
 import socket
-import pathlib, os
+import os
 
 def startEmulator():
     avds = subprocess.check_output(["emulator", '-list-avds']).decode('utf-8').splitlines()
@@ -79,11 +79,12 @@ def attempt_cookies_collection(device: Device):
 
 
 def refresh_cookies(emulator_id):
+    # Ensure we have empty auth file
+    with open(os.path.expanduser("~/.emulator_console_auth_token", "w")) as fp:
+        pass
+
     emulator = startEmulator()
     try:
-        time.sleep(5)
-        # Make sure auth token does not exist, we want to bypass authentication
-        pathlib.Path(os.path.expanduser("~/.emulator_console_auth_token")).unlink(missing_ok=True)
         wait_for_port(host="127.0.0.1", port=5037)
         client = AdbClient(host="127.0.0.1", port=5037)
         device = client.device(emulator_id)
