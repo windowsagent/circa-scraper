@@ -86,6 +86,8 @@ def refresh_cookies(emulator_id):
         wait_for_port(host="127.0.0.1", port=5037)
         client = AdbClient(host="127.0.0.1", port=5037)
         device = client.device(emulator_id)
+        if not device:
+            raise Exception
         prepare_device(device, emulator_id)
     finally:
         emulator.terminate()
