@@ -80,7 +80,7 @@ def attempt_cookies_collection(device: Device):
 
 def refresh_cookies(emulator_id):
     # Ensure we have empty auth file
-    with open(os.path.expanduser("~/.emulator_console_auth_token", "w")) as fp:
+    with open(os.path.expanduser("~/.emulator_console_auth_token"), "w") as fp:
         pass
 
     emulator = startEmulator()
