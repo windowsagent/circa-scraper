@@ -26,8 +26,6 @@ def startEmulator():
 
 
 def prepare_device(device: Device):
-    print("Disabling google quick search box for better performance")   
-    device.shell("su root pm disable com.google.android.googlequicksearchbox")
     print("Installing circasports")   
     device.install("./com.circasports.co.apk")
     device.shell("pm grant com.circasports.co  android.permission.ACCESS_FINE_LOCATION")
