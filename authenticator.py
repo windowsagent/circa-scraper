@@ -37,7 +37,7 @@ def check_adb_devices_down():
 
 def prepare_device(device: Device):
     print("Installing circasports")   
-    device.install("./com.circasports.co.apk")
+    device.install("./com.circasports.co")
     device.shell("pm grant com.circasports.co  android.permission.ACCESS_FINE_LOCATION")
 # Open app
     print("Opening circasports")
