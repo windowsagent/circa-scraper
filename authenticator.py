@@ -6,7 +6,7 @@ from ppadb.client import Client as AdbClient
 from ppadb.command.host import Device
 import memcache
 import socket
-import pathlib
+import pathlib, os
 
 def startEmulator():
     avds = subprocess.check_output(["emulator", '-list-avds']).decode('utf-8').splitlines()
@@ -22,7 +22,7 @@ def startEmulator():
                      '-qemu', '-cpu', 'max', '-machine', 'gic-version=max']
     
     # Make sure auth token does not exist, we want to bypass authentication
-    pathlib.Path("~/.emulator_console_auth_token").unlink(missing_ok=True)
+    pathlib.Path(os.path.expanduser("~/.emulator_console_auth_token")).unlink(missing_ok=True)
 
     return subprocess.Popen(start_command)
 
