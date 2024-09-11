@@ -18,7 +18,7 @@ def startEmulator():
     avd_name = avds[0]
 
     # Start the selected AVD
-    start_command = ["/opt/android-sdk/emulator/emulator", '-avd', avd_name, '-ports', '5036,5037', '-no-window', '-no-audio', '-skip-adb-auth', '-no-boot-anim',
+    start_command = ["/opt/android-sdk/emulator/emulator", '-avd', avd_name, '-no-window', '-no-audio', '-skip-adb-auth', '-no-boot-anim',
                      '-qemu', '-cpu', 'max', '-machine', 'gic-version=max']
     
 
