@@ -24,6 +24,16 @@ def startEmulator():
 
     return subprocess.Popen(start_command)
 
+def check_adb_devices_down():
+    try:
+        result = subprocess.run(["adb", "devices"], capture_output=True, text=True)
+        if "offline" in result.stdout:
+            return True
+        return False
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return True
+    
 
 def prepare_device(device: Device):
     print("Installing circasports")   
@@ -72,6 +82,8 @@ def refresh_cookies(emulator_id):
         device = client.device(emulator_id)
         if not device:
             raise Exception
+        while check_adb_devices_down():
+            time.sleep(10)
         prepare_device(device)
         return attempt_cookies_collection(device)
     finally:
