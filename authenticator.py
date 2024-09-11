@@ -18,7 +18,7 @@ def startEmulator():
     avd_name = avds[0]
 
     # Start the selected AVD
-    start_command = ["/opt/android-sdk/emulator/emulator", '-avd', avd_name, '-ports', '5036,5037', '-no-window', '-no-audio', '-skip-adb-auth', '-no-boot-anim', '-show-kernel',
+    start_command = ["/opt/android-sdk/emulator/emulator", '-avd', avd_name, '-ports', '5036,5037', '-no-window', '-no-audio', '-skip-adb-auth', '-no-boot-anim',
                      '-qemu', '-cpu', 'max', '-machine', 'gic-version=max']
     
 
@@ -37,21 +37,16 @@ def wait_for_port(port: int, host: str = 'localhost', timeout: float = 10.0):
                 raise TimeoutError()
 
 def prepare_device(device: Device, emulator_id: str):
+    print("Disabling google quick search box for better performance")   
     device.shell("su root pm disable com.google.android.googlequicksearchbox")
-    device.shell("am force-stop com.circasports.co")
-    if device:
-        # Ensure adb is running as root
-        os.system("adb -s " + emulator_id + " root")
+    print("Installing circasports")   
+    device.install("./com.circasports.co.apk")
+    device.shell("pm grant com.circasports.co  android.permission.ACCESS_FINE_LOCATION")
 
-        # Ensure app is installed
-        device.install("./com.circasports.co.apk")
-        device.shell("pm grant com.circasports.co  android.permission.ACCESS_FINE_LOCATION")
-
-        # Open app
-        command = "monkey -v -p com.circasports.co -c android.intent.category.LAUNCHER 1"
-        device.shell(command)
-    else:
-        raise Exception("Device not found")
+    # Open app
+    print("Opening circasports")
+    command = "monkey -v -p com.circasports.co -c android.intent.category.LAUNCHER 1"
+    device.shell(command)
 
 
 def attempt_cookies_collection(device: Device):
@@ -60,6 +55,7 @@ def attempt_cookies_collection(device: Device):
             "data/data/com.circasports.co/app_webview/Default/Cookies"
         )
         output_path = "cookies.sqlitedb"
+        print(f"Saving cookies to {output_path}")
         device.pull(input_path, output_path)
 
         db = sqlite3.connect(output_path)
